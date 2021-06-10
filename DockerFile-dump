@@ -1,0 +1,9 @@
+FROM adoptopenjdk/openjdk11:alpine-jre
+
+# add this to prevent it from complaining ERROR: unsatisfiable constraints
+RUN  apk add --no-cache
+RUN  apk add mysql-client
+RUN  apk add tar
+RUN  mkdir -p /opt/drportal/dbdump
+COPY lib/* /opt/drportal/dbdump/
+CMD  java -cp $(echo /opt/drportal/dbdump/*.jar | tr ' ' ':') aws.proserve.bcs.dr.dbdump.mysql.DumpMySql
